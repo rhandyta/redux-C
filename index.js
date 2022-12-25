@@ -3,14 +3,18 @@ const createStore = redux.createStore;
 
 // action
 const BUY_SHOES = "BUY_SHOES";
+const BUY_GLOVES = "BUY_GLOVES";
 
 // State
 const initialShoes = {
     stock: 50,
 };
+const initialGloves = {
+    stock: 50,
+};
 
 // reducer
-const reducer = (state = initialShoes, action) => {
+const shoesReducer = (state = initialShoes, action) => {
     switch (action.type) {
         case BUY_SHOES:
             return {
@@ -22,14 +26,32 @@ const reducer = (state = initialShoes, action) => {
     }
 };
 
-const store = createStore(reducer);
-const unsub = store.subscribe(() =>
-    console.log(`subscribe dijalankan=>`, store.getState())
+const glovesReducer = (state = initialGloves, action) => {
+    switch (action.type) {
+        case BUY_GLOVES:
+            return {
+                ...state,
+                stock: state.stock - 2,
+            };
+        default:
+            return state;
+    }
+};
+
+const storeShoes = createStore(shoesReducer);
+const storeGloves = createStore(glovesReducer);
+
+const unsub = storeShoes.subscribe(() =>
+    console.log(`subscribe dijalankan=>`, storeShoes.getState())
 );
 
-store.dispatch({ type: BUY_SHOES });
-store.dispatch({ type: BUY_SHOES });
+// DISPATCH SHOES
+storeShoes.dispatch({ type: BUY_SHOES });
 unsub();
-store.dispatch({ type: BUY_SHOES });
+storeShoes.dispatch({ type: BUY_SHOES });
 
-console.log(store.getState());
+// DISPATCH GLOVES
+storeGloves.dispatch({ type: BUY_GLOVES });
+
+console.log(storeShoes.getState());
+console.log(storeGloves.getState());
