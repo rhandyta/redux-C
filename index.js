@@ -23,7 +23,13 @@ const reducer = (state = initialShoes, action) => {
 };
 
 const store = createStore(reducer);
+const unsub = store.subscribe(() =>
+    console.log(`subscribe dijalankan=>`, store.getState())
+);
 
+store.dispatch({ type: BUY_SHOES });
+store.dispatch({ type: BUY_SHOES });
+unsub();
 store.dispatch({ type: BUY_SHOES });
 
 console.log(store.getState());
