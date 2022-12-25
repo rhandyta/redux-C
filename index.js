@@ -1,5 +1,6 @@
 const redux = require("redux");
 const createStore = redux.createStore;
+const combineReducer = redux.combineReducers;
 
 // action
 const BUY_SHOES = "BUY_SHOES";
@@ -10,7 +11,7 @@ const initialShoes = {
     stock: 50,
 };
 const initialGloves = {
-    stock: 50,
+    stock: 20,
 };
 
 // reducer
@@ -38,20 +39,25 @@ const glovesReducer = (state = initialGloves, action) => {
     }
 };
 
-const storeShoes = createStore(shoesReducer);
-const storeGloves = createStore(glovesReducer);
+const rootReducer = combineReducer({
+    shoes: shoesReducer,
+    gloves: glovesReducer,
+});
 
-const unsub = storeShoes.subscribe(() =>
-    console.log(`subscribe dijalankan=>`, storeShoes.getState())
+// const storeShoes = createStore(shoesReducer);
+// const storeGloves = createStore(glovesReducer);
+const store = createStore(rootReducer);
+
+const unsub = store.subscribe(() =>
+    console.log(`subscribe dijalankan=>`, store.getState())
 );
 
 // DISPATCH SHOES
-storeShoes.dispatch({ type: BUY_SHOES });
-unsub();
-storeShoes.dispatch({ type: BUY_SHOES });
+store.dispatch({ type: BUY_SHOES });
+store.dispatch({ type: BUY_SHOES });
+// unsub();
 
 // DISPATCH GLOVES
-storeGloves.dispatch({ type: BUY_GLOVES });
+store.dispatch({ type: BUY_GLOVES });
 
-console.log(storeShoes.getState());
-console.log(storeGloves.getState());
+console.log(store.getState());
